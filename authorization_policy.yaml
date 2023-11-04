@@ -1,0 +1,19 @@
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: ap
+spec:
+  selector:
+    matchLabels:
+      app: frontend
+  action: DENY
+  rules:
+  - to:
+    - operation:
+        paths:
+        - /product/*
+        - /cart/*
+    when:
+    - key: request.auth.claims[roles]
+      notValues:
+      - admin
